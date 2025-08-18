@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const CUBES = 80; // Number of cubes floating
 
@@ -34,15 +34,21 @@ export default function BackgroundEffect() {
     return () => window.removeEventListener("mousemove", handleMouseMove);
   }, [mouseX, mouseY]);
 
-  // Generate scattered cubes
-  const cubes = useMemo<CubeData[]>(() => {
-    return Array.from({ length: CUBES }, () => ({
+  // Generate scattered cubes safely
+  const [cubes, setCubes] = useState<CubeData[]>([]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return; // guard for SSR
+
+    const generated = Array.from({ length: CUBES }, () => ({
       x: (Math.random() - 0.5) * window.innerWidth * 1.5,
       y: (Math.random() - 0.5) * window.innerHeight * 1.5,
       z: (Math.random() - 0.5) * 800,
-      size: 12 + Math.random() * 20, // Cube size varies
+      size: 12 + Math.random() * 20,
       floatSpeed: 6 + Math.random() * 6,
     }));
+
+    setCubes(generated);
   }, []);
 
   return (
