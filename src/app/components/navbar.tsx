@@ -29,30 +29,34 @@ export default function Navbar() {
   };
 
   // Track which section is active
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActive(entry.target.id);
-          }
-        });
-      },
-      { threshold: 0.6 } // 60% of section should be visible
-    );
+useEffect(() => {
+  const sections = navLinks.map((link) => document.getElementById(link.href));
 
-    navLinks.forEach((link) => {
-      const section = document.getElementById(link.href);
-      if (section) observer.observe(section);
-    });
+  const observer = new IntersectionObserver(
+    (entries) => {
+      // Sort entries by how much of the section is visible
+      const visibleSections = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
 
-    return () => {
-      navLinks.forEach((link) => {
-        const section = document.getElementById(link.href);
-        if (section) observer.unobserve(section);
-      });
-    };
-  }, []);
+      if (visibleSections.length > 0) {
+        setActive(visibleSections[0].target.id); // pick the most visible
+      }
+    },
+    {
+      root: null,
+      rootMargin: "0px",
+      threshold: Array.from({ length: 101 }, (_, i) => i / 100), // 0 to 1 in 0.01 increments
+    }
+  );
+
+  sections.forEach((sec) => sec && observer.observe(sec));
+
+  return () => {
+    sections.forEach((sec) => sec && observer.unobserve(sec));
+  };
+}, []);
+
 
   return (
     <nav className="fixed top-4 left-0 w-full z-50 px-4">
@@ -107,7 +111,7 @@ export default function Navbar() {
             onClick={() => handleScroll("contact")}
             className="px-4 py-2 rounded-xl font-semibold text-white
             bg-gradient-to-r from-blue-500 to-purple-600 shadow-lg
-            hover:shadow-[0_0_15px_rgba(99,102,241,0.8)] transition-all"
+            hover:shadow-[0_0_15px_rgba(99,102,241,0.8)] transition-all cursor-pointer"
           >
             Hire Me
           </button>

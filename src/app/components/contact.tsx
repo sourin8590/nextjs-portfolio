@@ -49,15 +49,26 @@ export default function Contact() {
     }
   };
 
+  const contactItems = [
+    { icon: <Mail size={24} />, text: "souringhanty.20@gmail.com", color: "from-purple-500 to-pink-500" },
+    { icon: <Phone size={24} />, text: "+91 79087 61903", color: "from-blue-400 to-purple-600" },
+    { icon: <MapPin size={24} />, text: "Durgapur, West Bengal, India", color: "from-green-400 to-teal-500" },
+  ];
+
+  const socialItems = [
+    { icon: <Github size={20} />, href: "https://github.com/sourin8590", color: "bg-gray-800/40 hover:bg-gray-700/50" },
+    { icon: <Linkedin size={20} />, href: "https://linkedin.com/in/sourin-ghanty", color: "bg-blue-600/30 hover:bg-blue-500/40" },
+    { icon: <Twitter size={20} />, href: "https://x.com/sourin_123", color: "bg-blue-400/30 hover:bg-blue-300/40" },
+    { icon: <Instagram size={20} />, href: "https://instagram.com/sourin__ghanty", color: "bg-pink-500/30 hover:bg-pink-400/40" },
+  ];
+
   return (
     <section
       id="contact"
       className="w-full min-h-screen flex flex-col items-center justify-center px-6 sm:px-10 py-20"
     >
-      {/* Toast container */}
       <Toaster position="top-right" reverseOrder={false} />
 
-      {/* Section Title */}
       <motion.h2
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -68,7 +79,6 @@ export default function Contact() {
         Get in <span className="text-purple-400">Touch</span>
       </motion.h2>
 
-      {/* Container */}
       <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-12">
         {/* Contact Info */}
         <motion.div
@@ -77,15 +87,11 @@ export default function Contact() {
           transition={{ duration: 0.8 }}
           className="flex flex-col gap-6"
         >
-          {/* Info Cards */}
-          {[
-            { icon: <Mail size={24} />, text: "souringhanty.20@gmail.com", color: "from-purple-500 to-pink-500" },
-            { icon: <Phone size={24} />, text: "+91 79087 61903", color: "from-blue-400 to-purple-600" },
-            { icon: <MapPin size={24} />, text: "Durgapur, West Bengal, India", color: "from-green-400 to-teal-500" },
-          ].map((item, idx) => (
-            <div
+          {contactItems.map((item, idx) => (
+            <motion.div
               key={idx}
-              className={`flex items-center gap-4 p-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.25)] hover:shadow-[0_12px_36px_rgba(0,0,0,0.35)] transition-all duration-500 cursor-pointer`}
+              className={`flex flex-col sm:flex-row items-start sm:items-center gap-4 p-6 rounded-2xl backdrop-blur-xl bg-white/5 border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.25)] transition-all duration-500 cursor-pointer`}
+              whileHover={{ scale: 1.03, boxShadow: "0 16px 40px rgba(0,0,0,0.35)" }}
             >
               <motion.div
                 className={`p-4 rounded-full bg-gradient-to-br ${item.color} text-white shadow-lg`}
@@ -94,18 +100,13 @@ export default function Contact() {
               >
                 {item.icon}
               </motion.div>
-              <p className="text-gray-100 text-lg font-medium">{item.text}</p>
-            </div>
+              <p className="text-gray-100 text-lg font-medium break-words">{item.text}</p>
+            </motion.div>
           ))}
 
           {/* Social Buttons */}
           <div className="flex items-center gap-6 mt-8">
-            {[
-              { icon: <Github size={20} />, href: "https://github.com/sourin8590", color: "bg-gray-800/40 hover:bg-gray-700/50" },
-              { icon: <Linkedin size={20} />, href: "https://linkedin.com/in/sourin-ghanty", color: "bg-blue-600/30 hover:bg-blue-500/40" },
-              { icon: <Twitter size={20} />, href: "https://x.com/sourin_123", color: "bg-blue-400/30 hover:bg-blue-300/40" },
-              { icon: <Instagram size={20} />, href: "https://instagram.com/sourin__ghanty", color: "bg-pink-500/30 hover:bg-pink-400/40" },
-            ].map((item, idx) => (
+            {socialItems.map((item, idx) => (
               <motion.a
                 key={idx}
                 href={item.href}
